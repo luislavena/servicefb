@@ -1,0 +1,35 @@
+*0.3.0* (February 12, 2007)
+
+  * ServiceFB is now under MIT license.
+
+  * No log file (service.log) will be created unless SERVICEFB_DEBUG_LOG is defined.
+    That will trim a bit the reported information
+
+*0.2* (October 19, 2006)
+
+  * All sample files renamed, basic, advance and complex services.
+    Please read the description header of each one for more information
+
+  * Reimplemented the way fb.svc handles services, allowing now multiple services run 
+    from the same process.
+
+  * Implemented ServiceHost: handling of multiple services from the same process (shared)
+    refer to sample/complex_service.bas 
+
+  * Added automatic loading of definitions (include file) for ServiceFB Utils namespace
+    Use #define SERVICEFB_INCLUDE_UTILS
+    Also must link with ServiceFB_Utils.bas
+
+  * ServiceFB now hides privates from the public interface, to avoid peeking ;-)
+  
+  * Coded console mode for debugging and testing of services (one or many)
+  
+*0.1* (October 1, 2006)
+
+  * Initial import, basic functionality.
+
+  * Included sample service for testing.
+
+  * It will dump a basic log using _dprint() logging helper.
+  
+  * Included Rakefile (used to package each release and compile all).

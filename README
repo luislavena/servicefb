@@ -1,0 +1,99 @@
+= ServiceFB
+
+ServiceFB simplify programmers work when creating NT Services using FreeBASIC as 
+programming language. It also encapsulate most of the Win32 API and provide a clean
+event-driven like interface.
+
+== What You'll Need
+
+1. Windows NT/2000/XP/2003 platform
+    ServiceFB is designed *only* for Windows platform. 
+    There is no plan to provide Daemonize (*nix services)
+    
+2. FreeBASIC 0.17 (lastest CVS-build)
+    ServiceFB do extensive use of features only available in lastest CVS builds.
+    You could download the basic (compiler and runtime library) from this url:
+    
+      http://ecowles.dyndns.org/fbdu/
+    
+    Follow the instructions for each platform to use these updates.
+    Thanks to Pritchard and Eric (Windows) and ikkejw (Linux) for these nightly builds.
+    
+3. Understand what you're doing
+    Please check the included sample to get a peek on how structure your new service.
+    Debugging NT services could be a real pain. First code your application, test it
+    and later rearrange it as NT service to avoid problems.
+
+== Getting Started
+
+  The process to create a new service involves three simple steps:
+  (excluding your actual service code, of course)
+  
+  1. Creation of new service holder
+      After importing (using) the fb.svc namespace, you should to something like this:
+      
+        dim myservice as ServiceProcess = type<ServiceProcess>("My Service Name Here")
+      
+      This will create a new ServiceProcess to work with. Also will initialize the 'name'
+      property with the one you provided. You could set it a later time and remove half of 
+      the instructions:
+      
+        dim myservice as ServiceProcess
+        myservice.name = "My Service Name Here"
+      
+      If no name is given, ServiceFB will default it to "New Service Process"
+      Each service name should be unique, thats a Windows rule.
+      
+  2. Assign your events (callbacks)
+      With your freshly created ServiceProcess, now must assign the events you want your
+      service respond to. If your service don't need initialization, there's no need for
+      coding onInit() function. The same applies to others events. Please note that using
+      onPause will require also onContinue to work properly (both events must be coded for
+      the service could enable Pause/Continue functionality).
+      A sample of code:
+      
+        declare function onInit(byref self as ServiceProcess) as integer
+        declare sub onStart(byref self as ServiceProcess)
+        
+        .. (actual code for each event) ..
+        
+        dim myservice as ServiceProcess = type<ServiceProcess>("My Shinny New Service")
+        with myservice
+            .onInit = @onInit
+            .onStart = @onStart
+        end with
+        
+      Also note that onInit differ from other on* events (it is a function). Its coded that
+      way so we could abort the service initialization properly. Set it to FALSE (0) to abort.
+      
+  3. Run your service
+      Now that everything is set, you must call Run() method to start the service.
+      It will automatically notify the Service Manager about its state and let you control using
+      command line syntax:
+      
+        net start|stop|pause|continue myservice
+        
+      Or graphically form the Services tool at Administrative Tools folder.
+      
+== Current Limitations
+  
+  Currently there is no service installation/uninstallation functionality.
+  That is planned for future releases.
+  
+  The command line is passed *filtered* (without SCM stuff) back to the service via commandline 
+  property
+  
+  For now, if you need to install the service, use SC from command line:
+  
+    sc create MyServiceName binPath= C:\Path\To\My\compiled_service.exe
+    
+  Use delete instead of create to remove the installed service.
+  Also, do a <tt>sc create</tt> to get more options.
+  
+== Serving multiple services from the same process
+
+  Please refer to Advanced Techniques documentation (docs/advanced.rdoc)
+  
+== License
+
+  ServiceFB is released under the MIT license.

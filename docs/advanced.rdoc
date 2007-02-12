@@ -1,0 +1,59 @@
+= Advanced Techniques: Serving multiple services from the same process
+
+This technique is called shared process, where multiple services coded inside the same
+executable work and share the process space, reducing that way the memory footprint of 
+serving several process (all of the same kind of complementary).
+
+This is similar on how svchost manage Windows System Services.
+
+== How To Use
+
+  In general lines, the creation of each service is based in the same steps as described
+  on the README file -- Getting Started section.
+  
+  The main change is that you'll not execute each service indiviaully, but will require a 
+  ServiceHost object.
+  
+  ServiceHost will perform the needed steps to announce the services against SCM. You first
+  need define your ServiceHost:
+  
+    dim MyHost as ServiceHost
+    
+  Now, after you have created and assigning the name and actions for each of your services, 
+  add each one to the ServiceHost table:
+  
+    MyHost.Add(Service1)
+    MyHost.Add(Service2)
+    ...
+    MyHost.Add(ServiceN)
+    
+  Be aware that each service name must be unique so the Service Control Manager (SCM) could
+  communicate correctly with each one.
+  
+  Now, you're ready to start, simply call
+  
+    MyHost.Run()
+    
+  Which will perform the required actions and negotations with the SCM based on your services.
+  
+== Advices
+
+  Sharing the same process sounds cool, but is dangerous. All the services share the same memory 
+  space, that means some locking must be applied when working with shared/global data.
+  
+  Conceptually, if I crash a thread inside my shared process, the whole process could crash.
+  So far, based only on testing, couldn't recreate that scenario, but be careful.
+
+  If you defined your events (onInit, onStart, on*) globaly, they cannot be shared across services
+  safely unless you code some magic tricks and locking mechanisms around them. Please refer to the
+  Reusability Techniques section in this document for a workaround this problem.
+  
+== Reusability techniques
+
+  With simplification in mind, ServiceFB offer you way to structure your services in the way that
+  isolate service internals and let you focus on your code.
+  
+  TODO: describe example on setting instances of the same service code but serving / responding
+  each one to different service names.
+
+
