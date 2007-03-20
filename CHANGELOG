@@ -1,3 +1,8 @@
+*0.3.1* (March 19, 2007)
+
+  * Running service as Console didn't abort if onInit() return FALSE 
+    (fixed issue #2 google-code)
+
 *0.3.0* (February 12, 2007)
 
   * ServiceFB is now under MIT license.
