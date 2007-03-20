@@ -140,6 +140,7 @@ namespace utils   '# fb.svc.utils
         dim service_name as string
         dim service as ServiceProcess ptr
         dim commandline as string
+        dim success as integer
         
         _dprint("ServiceController.Console()")
         
@@ -170,42 +171,45 @@ namespace utils   '# fb.svc.utils
                 
                 print "Starting service '"; service_name; "' in console mode, please wait..."
                 
-                '# launch service onInit in another thread
+                '# onInit should be started inline,
+                '# and its result validated!
                 if not (service->onInit = 0) then
-                    '# create the thread
-                    working_thread = threadcreate(service->onInit, cint(service))
+                    success = service->onInit(*service)
+                end if
+                
+                '# only continue if success
+                if not (success = 0) then
+                    '# now set service.state to running
+                    service->state = Running
                     
-                    '# now wait for it to terminate
-                    threadwait(working_thread)
-                end if
+                    '# now, fire the main loop (onStart)
+                    if not (service->onStart = 0) then
+                        '# create the thread
+                        working_thread = threadcreate(service->onStart, cint(service))
+                    end if
+                    
+                    print "Service is in running state."
+                    print "Press Ctrl-C to stop it."
                 
-                '# now set service.state to running
-                service->state = Running
-                
-                '# now, fire the main loop (onStart)
-                if not (service->onStart = 0) then
-                    '# create the thread
-                    working_thread = threadcreate(service->onStart, cint(service))
-                end if
-                
-                print "Service is in running state."
-                print "Press Ctrl-C to stop it."
-                
-                '# now that onStart is running, must monitor the stop_signal
-                '# in case it arrives, the service state must change to exit the
-                '# working thread.
-                condwait(_svc_stop_signal)
-                
-                print "Stop signal received, stopping..."
-                
-                '# received the signal, so set state = Stopped
-                service->state = Stopped
-                
-                print "Waiting for onStart() to exit..."
-                
-                '# now wait for the thread to terminate
-                if not (working_thread = 0) then
-                    threadwait(working_thread)
+                    '# now that onStart is running, must monitor the stop_signal
+                    '# in case it arrives, the service state must change to exit the
+                    '# working thread.
+                    condwait(_svc_stop_signal)
+                    
+                    print "Stop signal received, stopping..."
+                    
+                    '# received the signal, so set state = Stopped
+                    service->state = Stopped
+                    
+                    print "Waiting for onStart() to exit..."
+                    
+                    '# now wait for the thread to terminate
+                    if not (working_thread = 0) then
+                        threadwait(working_thread)
+                    end if
+                    
+                else
+                    print "Error starting the service, onInit() failed."
                 end if
                 
                 print "Service stopped, doing cleanup."
