@@ -336,7 +336,7 @@ namespace svc
                     service->UpdateState(SERVICE_RUNNING)
                     if not (service->onStart = 0) then
                         _dprint("dispatch onStart() as new thread")
-                        service->_threadHandle = threadcreate(service->onStart, cint(service))
+                        service->_threadHandle = threadcreate(service->onStart, service)
                         '# my guess? was a hit!
                     end if
                     

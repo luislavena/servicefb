@@ -185,7 +185,7 @@ namespace utils   '# fb.svc.utils
                     '# now, fire the main loop (onStart)
                     if not (service->onStart = 0) then
                         '# create the thread
-                        working_thread = threadcreate(service->onStart, cint(service))
+                        working_thread = threadcreate(service->onStart, service)
                     end if
                     
                     print "Service is in running state."

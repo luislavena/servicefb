@@ -1,3 +1,7 @@
+*SVN*
+
+  * Fixed some scalar to pointer warnings
+  
 *0.3.0* (February 12, 2007)
 
   * ServiceFB is now under MIT license.
