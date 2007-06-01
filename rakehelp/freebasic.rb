@@ -213,6 +213,7 @@ module FreeBASIC
         cmdline << "-#{@options[:errorchecking].to_s}" if @options.has_key?(:errorchecking)
         cmdline << "-mt" if (@options.has_key?(:mt) && @options[:mt] == true)
         cmdline << "-profile" if (@options.has_key?(:profile) && @options[:profile] == true)
+        cmdline << "-w pedantic" if (@options.has_key?(:pedantic) && @options[:pedantic] == true)
         cmdline << "-c #{source}"
         cmdline << "-o #{target}"
         cmdline << "-m #{main}" unless main.nil?

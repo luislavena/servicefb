@@ -19,11 +19,17 @@ Rake::PackageTask.new(PRODUCT_NAME.downcase, PRODUCT_VERSION) do |p|
 end
 
 # global options shared by all the project in this Rakefile
-OPTIONS = { :debug => false, :profile => false, :errorchecking => :ex, :mt => true }
+OPTIONS = {
+  :debug => false,
+  :profile => false,
+  :errorchecking => :ex,
+  :mt => true,
+  :pedantic => true }
 
 OPTIONS[:debug] = true if ENV['DEBUG']
 OPTIONS[:profile] = true if ENV['PROFILE']
 OPTIONS[:errorchecking] = :exx if ENV['EXX']
+OPTIONS[:pedantic] = false if ENV['NOPEDANTIC']
 
 # ServiceFB namespace (lib)
 namespace :lib do

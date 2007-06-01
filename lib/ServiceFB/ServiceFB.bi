@@ -47,10 +47,10 @@ namespace svc   '# fb.svc
         
         '# methods (public)
         declare sub Run()
-        declare sub StillAlive(as integer = 10)
+        declare sub StillAlive(byval as integer = 10)
         
         '# helper methods (private)
-        declare sub UpdateState(as DWORD, as integer = 0, as integer = 0)
+        declare sub UpdateState(byval as DWORD, byval as integer = 0, byval as integer = 0)
         
         '# pseudo-events
         '# for onInit you should return FALSE (0) in case you want to abort

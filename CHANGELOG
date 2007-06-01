@@ -1,5 +1,9 @@
 *SVN*
-
+  
+  * Activate FB pedantic warnings by default (is really useful).
+  
+  * Added functions to determine parent process in x64 platforms.
+  
   * Fixed some scalar to pointer warnings
   
 *0.3.0* (February 12, 2007)

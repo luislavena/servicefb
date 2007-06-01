@@ -21,8 +21,8 @@ namespace svc
     declare sub _terminate() destructor
     
     '# global service procedures (private)
-    declare sub _main(as DWORD, as LPSTR ptr)
-    declare function _control_ex(as DWORD, as DWORD, as LPVOID, as LPVOID) as DWORD
+    declare sub _main(byval as DWORD, byval as LPSTR ptr)
+    declare function _control_ex(byval as DWORD, byval as DWORD, byval as LPVOID, byval as LPVOID) as DWORD
     declare sub _run()
     
     '# global references helper

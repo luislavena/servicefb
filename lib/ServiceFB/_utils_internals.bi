@@ -27,8 +27,14 @@ namespace utils   '# fb.svc.utils
     '# internals functions used to get Parent PID and Process Name
     '# using this we automatically determine if the service was started by SCM
     '# or by the user, from commandline or from explorer
-    declare function _parent_pid(as uinteger) as uinteger
-    declare function _process_name(as uinteger) as string
+    declare function _parent_pid(byval as uinteger) as uinteger
+    declare function _process_name(byval as uinteger) as string
+    declare function _process_name_dyn_psapi(byval as uinteger) as string
+    declare function _show_error() as string
+    
+    '# InStrRev (authored by ikkejw @ freebasic forums)
+    '# http://www.freebasic.net/forum/viewtopic.php?p=49315#49315
+    declare function InStrRev(byval as uinteger = 0, byref as string, byref as string) as uinteger
     
     '# use a signal (condition) in the console mode to know
     '# when the service should be stopped.
