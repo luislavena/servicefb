@@ -9,7 +9,7 @@ require 'rake/packagetask'
 require 'rakehelp/freebasic'
 
 PRODUCT_NAME = 'ServiceFB'
-PRODUCT_VERSION = '0.3.2'
+PRODUCT_VERSION = '0.3.3'
 
 # Package ServiceFB for source distribution
 Rake::PackageTask.new(PRODUCT_NAME.downcase, PRODUCT_VERSION) do |p|
