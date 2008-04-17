@@ -1,4 +1,4 @@
-*SVN*
+*0.3.2*
   
   * Activate FB pedantic warnings by default (is really useful).
   
@@ -10,6 +10,9 @@
   
   * Wrap onStart thread calling due function signature changes in FB 0.18.
   
+  * Correct usage of Mutex and Conditionals during emulated service mode.
+    (fixes compilation under FB > 0.18.3b).
+
 *0.3.0* (February 12, 2007)
 
   * ServiceFB is now under MIT license.
